@@ -1,0 +1,37 @@
+# Dependencies
+/vendor
+/node_modules
+
+# Environment
+.env
+.env.*
+
+# Logs
+/storage/logs/*
+*.log
+
+# Laravel cache
+/bootstrap/cache/*.php
+/bootstrap/cache/packages.php
+/bootstrap/cache/services.php
+
+# IDE
+/.idea
+/.vscode
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PHPUnit
+.phpunit.result.cache
+
+# NPM
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Composer
+composer.phar
+
+/storage/framework/views/*

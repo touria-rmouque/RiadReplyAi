@@ -30,6 +30,20 @@ Route::middleware('auth')->group(function () {
         '/establishments/{establishment}/switch',
         [EstablishmentController::class, 'switch']
     )->name('establishments.switch');
+    Route::get(
+    '/establishments/archived',
+    [EstablishmentController::class, 'archived']
+)->name('establishments.archived');
+
+Route::patch(
+    '/establishments/{id}/restore',
+    [EstablishmentController::class, 'restore']
+)->name('establishments.restore');
+
+Route::delete(
+    '/establishments/{id}/force-delete',
+    [EstablishmentController::class, 'forceDelete']
+)->name('establishments.force-delete');
 
     /*
      Paramètres

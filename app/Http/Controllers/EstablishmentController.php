@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+
 class EstablishmentController extends Controller
 {
     /**
@@ -95,7 +96,7 @@ class EstablishmentController extends Controller
     }
 
     /**
-     * Supprime un établissement.
+     * Archive un établissement.
      */
     public function destroy(
         Establishment $establishment
@@ -108,7 +109,7 @@ class EstablishmentController extends Controller
             ->route('establishments.index')
             ->with(
                 'status',
-                'Établissement supprimé.'
+                'Établissement archivé avec succès.'
             );
     }
 
@@ -128,6 +129,58 @@ class EstablishmentController extends Controller
         ->with(
             'status',
             'Établissement actif modifié.'
+        );
+}
+
+/**
+ * Liste des établissements archivés.
+ */
+public function archived(Request $request): View
+{
+    return view('establishments.archived', [
+        'establishments' => $request->user()
+            ->establishments()
+            ->onlyTrashed()
+            ->latest('deleted_at')
+            ->get(),
+    ]);
+}
+
+/**
+ * Restaurer un établissement.
+ */
+public function restore(int $id): RedirectResponse
+{
+    $establishment = Establishment::onlyTrashed()
+        ->where('user_id', auth()->id())
+        ->findOrFail($id);
+
+    $establishment->restore();
+
+    return redirect()
+        ->route('establishments.archived')
+        ->with(
+            'status',
+            'Établissement restauré avec succès.'
+        );
+}
+
+/**
+ * Suppression définitive.
+ */
+public function forceDelete(int $id): RedirectResponse
+{
+    $establishment = Establishment::onlyTrashed()
+        ->where('user_id', auth()->id())
+        ->findOrFail($id);
+
+    $establishment->forceDelete();
+
+    return redirect()
+        ->route('establishments.archived')
+        ->with(
+            'status',
+            'Établissement supprimé définitivement.'
         );
 }
 }

@@ -1,82 +1,296 @@
 # RiadReply AI
 
-Application SaaS de gestion des réponses aux avis clients pour riads
-et restaurants marocains. Analyse automatique des avis (sentiment,
-langue, thématiques), génération de réponses personnalisées par
-GPT-4o-mini, système de flagging des avis critiques.
+RiadReply AI est une application web développée avec **Laravel 12** permettant aux propriétaires de riads, hôtels et restaurants de centraliser, analyser et répondre intelligemment aux avis clients grâce à l'intelligence artificielle.
 
-## Fonctionnalités
+---
 
-- **Auth** — Inscription / connexion / déconnexion
-- **Profil établissement** — Nom, type (Riad / Restaurant), ton (Chaleureux / Formel / Enthousiaste)
-- **Paste & Go** — Colle un avis brut → analyse IA asynchrone
-- **Analyse IA (GPT-4o-mini)** :
-  - Sentiment : Positif / Neutre / Négatif
-  - Langue détectée automatiquement (fr, en, es, ar, de…)
-  - Thématiques extraites (Personnel, Propreté, Cuisine, WiFi…)
-  - Réponse draft dans la langue de l'avis, avec le nom de l'établissement et le bon ton
-  - Flagging automatique si avis négatif ou note ≤ 2/5
-- **Copier en 1 clic** — Pour coller sur Google / TripAdvisor / Booking
-- **Dashboard** — Stats globales, top thématiques, répartition sentiments
-- **Historique** — Liste paginée, filtres sentiment / flagué / recherche
+# Fonctionnalités
 
-## Installation
+## Authentification
 
-```bash
-# 1. Installer les dépendances
-composer install
+- Inscription et connexion sécurisées
+- Authentification API avec Laravel Sanctum
+- Gestion des tokens d'accès
+- Déconnexion
+- Profil utilisateur
 
-# 2. Configuration
-cp .env.example .env
-php artisan key:generate
+---
 
-# 3. Créer la base de données "riadreply" dans phpMyAdmin (XAMPP)
-# Puis vérifier DB_HOST, DB_DATABASE, DB_USERNAME dans .env
+##  Gestion des établissements
 
-# 4. Clé OpenAI dans .env
-# OPENAI_API_KEY=sk-...
-# Récupère une clé sur https://platform.openai.com/api-keys
+- Création d'un établissement
+- Modification
+- Archivage (Soft Delete)
+- Restauration
+- Suppression définitive
+- Changement d'établissement actif
 
-# 5. Publier la config OpenAI
-php artisan vendor:publish --provider="OpenAI\Laravel\ServiceProvider"
+Chaque utilisateur peut gérer plusieurs établissements.
 
-# 6. Migrations + seeder (crée les tags et le compte démo)
-php artisan migrate --seed
+---
 
-# 7. Lancer (2 terminaux)
-php artisan serve
-php artisan queue:listen
-```
+## Gestion des avis
 
-**Compte démo :** `demo@riadreply.test` / `password`
+- Import manuel d'un avis
+- Consultation des avis
+- Filtrage
+- Consultation d'un avis
+- Marquer un avis comme répondu
+- Suppression d'un avis
 
-## Architecture
+Chaque avis appartient à l'établissement actuellement sélectionné.
+
+---
+
+## Intelligence Artificielle
+
+Après l'ajout d'un avis :
+
+- détection automatique de la langue
+- analyse du sentiment
+- génération d'une réponse personnalisée
+- extraction des points importants
+
+L'analyse est exécutée en arrière-plan grâce aux Jobs Laravel.
+
+---
+
+##  Tableau de bord
+
+Le tableau de bord fournit notamment :
+
+- nombre total d'avis
+- avis positifs
+- avis négatifs
+- avis neutres
+- avis en attente
+- avis répondus
+
+---
+
+#  Technologies
+
+- Laravel 12
+- PHP 8.5
+- MySQL
+- Laravel Sanctum
+- Laravel Queues
+- Laravel Policies
+- Laravel Resources
+- Laravel Form Requests
+- Eloquent ORM
+- Blade
+- Tailwind CSS
+- AI Agents (Laravel AI)
+
+---
+
+#  Architecture
 
 ```
 app/
-  Enums/        Sentiment, ReviewStatus, EstablishmentType, EstablishmentTone
-  Models/       User, Establishment, Review, Tag
-  Services/     ReviewAnalysisService   ← prompt engineering + JSON strict
-  Jobs/         AnalyseReviewJob        ← traitement asynchrone (queue)
-  Http/
-    Controllers/
-      Auth/     RegisteredUserController, AuthenticatedSessionController
-      DashboardController, ReviewController, SettingsController
-    Requests/   StoreReviewRequest, StoreEstablishmentRequest
-database/
-  migrations/   establishments, tags, reviews, review_tag
-  seeders/      Tags prédéfinis + compte démo
-resources/views/
-  layouts/app   Sidebar amber, header, flash messages
-  auth/         login, register
-  dashboard/    index (stats + thématiques + avis récents)
-  reviews/      create (Paste & Go), show (réponse + copier), index (liste + filtres)
-  settings/     index (profil établissement)
-  vendor/pagination/tailwind.blade.php (pagination custom thème sombre)
+│
+├── Actions/
+├── AI/
+│   ├── Agents/
+│   ├── DTO/
+│   ├── Prompts/
+│   └── Tools/
+│
+├── Enums/
+├── Http/
+│   ├── Controllers/
+│   ├── Requests/
+│   └── Resources/
+│
+├── Jobs/
+├── Models/
+├── Policies/
+└── Services/
 ```
 
-## Coût IA
+Le projet suit une architecture orientée **Actions**, permettant de séparer la logique métier des contrôleurs.
 
-Le modèle `gpt-4o-mini` est très économique.
-Estimation : **~$0.001 par avis** (input + output).
-Pour 1000 avis/mois : ~$1.
+---
+
+#  Installation
+
+## Cloner le projet
+
+```bash
+git clone https://github.com/<username>/RiadReplyAi.git
+
+cd RiadReplyAi
+```
+
+## Installer les dépendances
+
+```bash
+composer install
+
+npm install
+```
+
+## Copier le fichier d'environnement
+
+```bash
+cp .env.example .env
+```
+
+Sous Windows :
+
+```bash
+copy .env.example .env
+```
+
+## Générer la clé
+
+```bash
+php artisan key:generate
+```
+
+## Configurer la base de données
+
+Modifier le fichier `.env`
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=riadreply
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+## Exécuter les migrations
+
+```bash
+php artisan migrate
+```
+
+---
+
+## Lancer le serveur
+
+```bash
+php artisan serve
+```
+
+---
+
+## Compiler les assets
+
+```bash
+npm run dev
+```
+
+---
+
+#  Tests
+
+Lancer tous les tests
+
+```bash
+php artisan test
+```
+
+Lancer un fichier spécifique
+
+```bash
+php artisan test tests/Feature/Api/AuthTest.php
+```
+
+Les tests couvrent :
+
+- Auth API
+- Dashboard API
+- Establishments API
+- Reviews API
+
+---
+
+#  API
+
+## Auth
+
+| Méthode | Endpoint |
+|----------|----------|
+| POST | /api/login |
+| POST | /api/logout |
+| GET | /api/me |
+
+---
+
+## Establishments
+
+| Méthode | Endpoint |
+|----------|----------|
+| GET | /api/establishments |
+| POST | /api/establishments |
+| GET | /api/establishments/{id} |
+| PUT | /api/establishments/{id} |
+| DELETE | /api/establishments/{id} |
+
+---
+
+## Reviews
+
+| Méthode | Endpoint |
+|----------|----------|
+| GET | /api/reviews |
+| POST | /api/reviews |
+| GET | /api/reviews/{id} |
+| PATCH | /api/reviews/{id}/reply |
+| DELETE | /api/reviews/{id} |
+
+---
+
+## Dashboard
+
+| Méthode | Endpoint |
+|----------|----------|
+| GET | /api/dashboard |
+
+---
+
+#  Sécurité
+
+Le projet utilise :
+
+- Laravel Sanctum
+- Form Requests
+- Policies
+- Validation des données
+- Protection CSRF (Web)
+- Authentification API par Token
+
+---
+
+#  Bonnes pratiques
+
+- Architecture Action Pattern
+- Form Requests
+- API Resources
+- Enums PHP
+- Policies Laravel
+- Soft Deletes
+- Jobs pour les traitements IA
+- Tests Feature
+- Code conforme aux conventions Laravel 12
+
+---
+
+#  Aperçu
+
+Le projet permet aux propriétaires de :
+
+- gérer plusieurs établissements ;
+- centraliser les avis clients ;
+- analyser automatiquement les sentiments ;
+- générer des réponses professionnelles grâce à l'IA ;
+- suivre les statistiques depuis un tableau de bord.
+
+---
+

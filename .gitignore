@@ -35,3 +35,4 @@ pnpm-debug.log*
 composer.phar
 
 /storage/framework/views/*
+.claude

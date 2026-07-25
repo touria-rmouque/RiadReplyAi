@@ -348,7 +348,7 @@
                                 Modifier le profil
                             </a>
 
-                            <a href="{{ route('settings.index') }}"
+                            <a href=""
                                class="flex items-center gap-3 px-4 py-3 text-sm text-ink hover:bg-stone transition">
                                 <svg width="16" height="16" class="shrink-0 text-muted" fill="none" viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>

@@ -46,16 +46,6 @@ Route::delete(
 )->name('establishments.force-delete');
 
     /*
-     Paramètres
-    */
-
-    Route::get('/settings', [SettingsController::class, 'index'])
-        ->name('settings.index');
-
-    Route::post('/settings', [SettingsController::class, 'store'])
-        ->name('settings.store');
-
-    /*
       Avis
     */
 

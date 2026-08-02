@@ -1,0 +1,67 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: riadreply_app
+
+    restart: unless-stopped
+
+    ports:
+      - "8000:80"
+
+    volumes:
+      - .:/var/www/html
+
+    depends_on:
+      - mysql
+
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: riadreply
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+  mysql:
+    image: mysql:8.0
+
+    container_name: riadreply_mysql
+
+    restart: unless-stopped
+
+    ports:
+      - "3307:3306"
+
+    environment:
+      MYSQL_DATABASE: riadreply
+      MYSQL_ROOT_PASSWORD: root
+      AI_DEFAULT_PROVIDER: groq
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      GROQ_MODEL: ${GROQ_MODEL}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+
+    container_name: riadreply_phpmyadmin
+
+    restart: unless-stopped
+
+    ports:
+      - "8080:80"
+
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

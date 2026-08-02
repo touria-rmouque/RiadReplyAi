@@ -54,12 +54,12 @@ class AnalyseReviewJob implements ShouldQueue
         }
 
         $result = new ReviewAnalysisResult(
-            sentiment: Sentiment::from($data['sentiment']),
-            language: $data['language'],
-            tags: $data['tags'] ?? [],
-            responseText: $data['responseText'],
-            isFlagged: $data['isFlagged'] ?? false,
-        );
+        sentiment: Sentiment::from($data['sentiment']),
+        language: $data['language'],
+        tags: $data['tags'] ?? [],
+        responseText: $data['response_text'],
+        isFlagged: $data['is_flagged'] ?? false,
+);
 
         $persistenceService->save(
             review: $review,

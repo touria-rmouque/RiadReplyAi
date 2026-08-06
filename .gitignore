@@ -4,7 +4,7 @@
 
 # Environment
 .env
-.env.*
+.env.testing
 
 # Logs
 /storage/logs/*

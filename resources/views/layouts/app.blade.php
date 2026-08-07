@@ -302,16 +302,6 @@
                 {{-- Partie droite --}}
                 <div class="flex items-center gap-4">
 
-                    {{-- Notification --}}
-                    <button class="relative w-10 h-10 rounded-lg border border-line hover:border-muted/50 transition">
-                        <svg class="mx-auto text-ink/70" width="18" height="18" fill="none" viewBox="0 0 24 24">
-                            <path d="M18 8A6 6 0 0 0 6 8V13L4 16H20L18 13V8Z"
-                                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                            <path d="M10 20A2 2 0 0 0 14 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                        </svg>
-                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-accent"></span>
-                    </button>
-
                     {{-- Profil --}}
                     <details class="relative">
                         <summary class="list-none cursor-pointer">

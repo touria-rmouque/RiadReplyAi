@@ -20,9 +20,9 @@ enum Sentiment: string
     public function badgeClasses(): string
     {
         return match ($this) {
-            self::Positive => 'bg-emerald-900/40 text-emerald-300 border-emerald-500/30',
-            self::Neutral  => 'bg-slate-800 text-slate-300 border-slate-600/30',
-            self::Negative => 'bg-red-900/40 text-red-300 border-red-500/30',
+            self::Positive => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            self::Neutral  => 'bg-slate-50 text-slate-600 border-slate-200',
+            self::Negative => 'bg-rose-50 text-rose-700 border-rose-200',
         };
     }
 
@@ -31,7 +31,7 @@ enum Sentiment: string
         return match ($this) {
             self::Positive => '#10B981',
             self::Neutral  => '#94A3B8',
-            self::Negative => '#EF4444',
+            self::Negative => '#E11D48',
         };
     }
 }

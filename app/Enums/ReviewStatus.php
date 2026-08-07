@@ -20,9 +20,9 @@ enum ReviewStatus: string
     public function badgeClasses(): string
     {
         return match ($this) {
-            self::Pending => 'bg-slate-800 text-slate-300 border-slate-600/30',
-            self::Replied => 'bg-emerald-900/40 text-emerald-300 border-emerald-500/30',
-            self::Flagged => 'bg-amber-900/40 text-amber-300 border-amber-500/30',
+            self::Pending => 'bg-slate-50 text-slate-600 border-slate-200',
+            self::Replied => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            self::Flagged => 'bg-amber-50 text-amber-700 border-amber-200',
         };
     }
 }

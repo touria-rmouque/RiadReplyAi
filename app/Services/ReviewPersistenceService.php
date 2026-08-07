@@ -29,42 +29,9 @@ class ReviewPersistenceService
         'decoration'  => 'Décoration',
     ];
 
-    public static function system(array $availableTags): string
-{
-    $slugs = implode(', ', array_keys($availableTags));
-
-    return <<<PROMPT
-Tu es un expert en gestion de la réputation en ligne spécialisé dans les établissements touristiques et de restauration.
-
-Retourne UNIQUEMENT un JSON valide.
-
-{
-  "sentiment": "positive|neutral|negative",
-  "language": "fr",
-  "tags": [],
-  "responseText": "",
-  "isFlagged": false
-}
-
-RÈGLES
-
-- sentiment : positive, neutral ou negative
-- language : code ISO 639-1
-- tags : utiliser uniquement :
-{$slugs}
-- responseText :
-  - dans la langue de l'avis
-  - 3 à 5 phrases
-  - remercier le client
-  - inclure le nom de l'établissement
-  - respecter le ton demandé
-  - si négatif : excuses + solution + invitation à revenir
-- isFlagged : true uniquement si problème grave, sécurité, hygiène ou sentiment très négatif.
-
-Ne retourne que le JSON, sans Markdown.
-PROMPT;
-}
-
+    /**
+     * Sauvegarde le résultat de l'analyse IA d'un avis.
+     */
     public function save(
         Review $review,
         ReviewAnalysisResult $analysis,
@@ -75,6 +42,9 @@ PROMPT;
             || $analysis->sentiment === Sentiment::Negative
             || ($rating !== null && $rating < 3);
 
+        /*
+         * Mise à jour de l'avis.
+         */
         $review->update([
             'sentiment'     => $analysis->sentiment->value,
             'language'      => $analysis->language,
@@ -86,11 +56,15 @@ PROMPT;
                 : ReviewStatus::Replied->value,
         ]);
 
+        /*
+         * Synchronisation des tags.
+         */
         $tagIds = [];
 
         foreach ($analysis->tags as $slug) {
 
-            if (! array_key_exists($slug, self::AVAILABLE_TAGS)) {
+            // Ignore les tags qui ne sont pas autorisés.
+            if (!array_key_exists($slug, self::AVAILABLE_TAGS)) {
                 continue;
             }
 
@@ -104,6 +78,9 @@ PROMPT;
 
         $review->tags()->sync($tagIds);
 
+        /*
+         * Log de l'analyse.
+         */
         Log::info('Review analysed', [
             'review_id' => $review->id,
             'sentiment' => $analysis->sentiment->value,
@@ -112,6 +89,9 @@ PROMPT;
             'tags'      => $analysis->tags,
         ]);
 
+        /*
+         * Retourne l'avis avec ses tags actualisés.
+         */
         return $review->fresh(['tags']);
     }
 }

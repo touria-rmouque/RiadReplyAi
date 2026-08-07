@@ -2,22 +2,44 @@
 
 RiadReply AI est une application web développée avec **Laravel 12** permettant aux propriétaires de riads, hôtels et restaurants de centraliser, analyser et répondre intelligemment aux avis clients grâce à l'intelligence artificielle.
 
+<p align="center">
+  <img src="public/photo/image.png" alt="Aperçu du tableau de bord RiadReply AI" width="800">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white" alt="PHP 8.5">
+  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+</p>
+
 ---
 
-# Fonctionnalités
+## Sommaire
 
-## Authentification
+- [Fonctionnalités](#fonctionnalités)
+- [Technologies](#technologies)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Tests](#tests)
+- [API](#api)
+- [Sécurité](#sécurité)
+- [Bonnes pratiques](#bonnes-pratiques)
+- [Aperçu](#aperçu)
 
+---
+
+## Fonctionnalités
+
+### Authentification
 - Inscription et connexion sécurisées
 - Authentification API avec Laravel Sanctum
 - Gestion des tokens d'accès
 - Déconnexion
 - Profil utilisateur
 
----
-
-##  Gestion des établissements
-
+### Gestion des établissements
 - Création d'un établissement
 - Modification
 - Archivage (Soft Delete)
@@ -25,12 +47,9 @@ RiadReply AI est une application web développée avec **Laravel 12** permettant
 - Suppression définitive
 - Changement d'établissement actif
 
-Chaque utilisateur peut gérer plusieurs établissements.
+> Chaque utilisateur peut gérer plusieurs établissements.
 
----
-
-## Gestion des avis
-
+### Gestion des avis
 - Import manuel d'un avis
 - Consultation des avis
 - Filtrage
@@ -38,54 +57,49 @@ Chaque utilisateur peut gérer plusieurs établissements.
 - Marquer un avis comme répondu
 - Suppression d'un avis
 
-Chaque avis appartient à l'établissement actuellement sélectionné.
+> Chaque avis appartient à l'établissement actuellement sélectionné.
 
----
-
-## Intelligence Artificielle
+### Intelligence artificielle
 
 Après l'ajout d'un avis :
 
-- détection automatique de la langue
-- analyse du sentiment
-- génération d'une réponse personnalisée
-- extraction des points importants
+- Détection automatique de la langue
+- Analyse du sentiment
+- Génération d'une réponse personnalisée
+- Extraction des points importants
 
-L'analyse est exécutée en arrière-plan grâce aux Jobs Laravel.
+> L'analyse est exécutée en arrière-plan grâce aux Jobs Laravel.
 
----
-
-##  Tableau de bord
+### Tableau de bord
 
 Le tableau de bord fournit notamment :
 
-- nombre total d'avis
-- avis positifs
-- avis négatifs
-- avis neutres
-- avis en attente
-- avis répondus
+- Nombre total d'avis
+- Avis positifs
+- Avis négatifs
+- Avis neutres
+- Avis en attente
+- Avis répondus
 
 ---
 
-#  Technologies
+## Technologies
 
-- Laravel 12
-- PHP 8.5
-- MySQL
-- Laravel Sanctum
-- Laravel Queues
-- Laravel Policies
-- Laravel Resources
-- Laravel Form Requests
-- Eloquent ORM
-- Blade
-- Tailwind CSS
-- AI Agents (Laravel AI)
+| Catégorie | Stack |
+|---|---|
+| Framework | Laravel 12, PHP 8.5 |
+| Base de données | MySQL |
+| Authentification | Laravel Sanctum |
+| Traitement asynchrone | Laravel Queues |
+| Autorisation | Laravel Policies |
+| API | Laravel Resources, Form Requests |
+| ORM | Eloquent |
+| Frontend | Blade, Tailwind CSS |
+| IA | AI Agents (Laravel AI) |
 
 ---
 
-#  Architecture
+## Architecture
 
 ```
 app/
@@ -113,25 +127,23 @@ Le projet suit une architecture orientée **Actions**, permettant de séparer la
 
 ---
 
-#  Installation
+## Installation
 
-## Cloner le projet
+### 1. Cloner le projet
 
 ```bash
 git clone https://github.com/<username>/RiadReplyAi.git
-
 cd RiadReplyAi
 ```
 
-## Installer les dépendances
+### 2. Installer les dépendances
 
 ```bash
 composer install
-
 npm install
 ```
 
-## Copier le fichier d'environnement
+### 3. Copier le fichier d'environnement
 
 ```bash
 cp .env.example .env
@@ -143,15 +155,15 @@ Sous Windows :
 copy .env.example .env
 ```
 
-## Générer la clé
+### 4. Générer la clé d'application
 
 ```bash
 php artisan key:generate
 ```
 
-## Configurer la base de données
+### 5. Configurer la base de données
 
-Modifier le fichier `.env`
+Dans le fichier `.env` :
 
 ```env
 DB_CONNECTION=mysql
@@ -162,25 +174,19 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
----
-
-## Exécuter les migrations
+### 6. Exécuter les migrations
 
 ```bash
 php artisan migrate
 ```
 
----
-
-## Lancer le serveur
+### 7. Lancer le serveur
 
 ```bash
 php artisan serve
 ```
 
----
-
-## Compiler les assets
+### 8. Compiler les assets
 
 ```bash
 npm run dev
@@ -188,15 +194,15 @@ npm run dev
 
 ---
 
-#  Tests
+## Tests
 
-Lancer tous les tests
+Lancer tous les tests :
 
 ```bash
 php artisan test
 ```
 
-Lancer un fichier spécifique
+Lancer un fichier spécifique :
 
 ```bash
 php artisan test tests/Feature/Api/AuthTest.php
@@ -211,51 +217,45 @@ Les tests couvrent :
 
 ---
 
-#  API
+## API
 
-## Auth
+### Auth
 
 | Méthode | Endpoint |
-|----------|----------|
-| POST | /api/login |
-| POST | /api/logout |
-| GET | /api/me |
+|---|---|
+| POST | `/api/login` |
+| POST | `/api/logout` |
+| GET | `/api/me` |
+
+### Establishments
+
+| Méthode | Endpoint |
+|---|---|
+| GET | `/api/establishments` |
+| POST | `/api/establishments` |
+| GET | `/api/establishments/{id}` |
+| PUT | `/api/establishments/{id}` |
+| DELETE | `/api/establishments/{id}` |
+
+### Reviews
+
+| Méthode | Endpoint |
+|---|---|
+| GET | `/api/reviews` |
+| POST | `/api/reviews` |
+| GET | `/api/reviews/{id}` |
+| PATCH | `/api/reviews/{id}/reply` |
+| DELETE | `/api/reviews/{id}` |
+
+### Dashboard
+
+| Méthode | Endpoint |
+|---|---|
+| GET | `/api/dashboard` |
 
 ---
 
-## Establishments
-
-| Méthode | Endpoint |
-|----------|----------|
-| GET | /api/establishments |
-| POST | /api/establishments |
-| GET | /api/establishments/{id} |
-| PUT | /api/establishments/{id} |
-| DELETE | /api/establishments/{id} |
-
----
-
-## Reviews
-
-| Méthode | Endpoint |
-|----------|----------|
-| GET | /api/reviews |
-| POST | /api/reviews |
-| GET | /api/reviews/{id} |
-| PATCH | /api/reviews/{id}/reply |
-| DELETE | /api/reviews/{id} |
-
----
-
-## Dashboard
-
-| Méthode | Endpoint |
-|----------|----------|
-| GET | /api/dashboard |
-
----
-
-#  Sécurité
+## Sécurité
 
 Le projet utilise :
 
@@ -264,11 +264,11 @@ Le projet utilise :
 - Policies
 - Validation des données
 - Protection CSRF (Web)
-- Authentification API par Token
+- Authentification API par token
 
 ---
 
-#  Bonnes pratiques
+## Bonnes pratiques
 
 - Architecture Action Pattern
 - Form Requests
@@ -282,15 +282,18 @@ Le projet utilise :
 
 ---
 
-#  Aperçu
+## Aperçu
 
 Le projet permet aux propriétaires de :
 
-- gérer plusieurs établissements ;
-- centraliser les avis clients ;
-- analyser automatiquement les sentiments ;
-- générer des réponses professionnelles grâce à l'IA ;
-- suivre les statistiques depuis un tableau de bord.
+- Gérer plusieurs établissements
+- Centraliser les avis clients
+- Analyser automatiquement les sentiments
+- Générer des réponses professionnelles grâce à l'IA
+- Suivre les statistiques depuis un tableau de bord
 
 ---
 
+## Licence
+
+Ce projet est distribué sous licence MIT.

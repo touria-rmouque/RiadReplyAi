@@ -258,35 +258,45 @@
 
         {{-- Header --}}
         <header class="bg-white border-b border-line px-8 py-4">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-4">
 
-                {{-- Partie gauche --}}
-                <div class="flex items-center gap-4">
+                {{-- Partie gauche : titre de la page --}}
+                <h1 class="text-xl font-display font-semibold text-ink truncate">
+                    @yield('titre', 'Dashboard')
+                </h1>
 
-                    <div>
-                        <p class="text-xs text-muted">Établissement actif</p>
-                        <h1 class="text-xl font-display font-semibold text-ink">
-                            {{ auth()->user()->currentEstablishment?->name ?? 'Aucun établissement' }}
-                        </h1>
-                    </div>
+                {{-- Partie droite --}}
+                <div class="flex items-center gap-3 shrink-0">
 
-                    @if(auth()->user()->establishments->count() > 1)
-                        <details class="relative">
-                            <summary class="cursor-pointer list-none flex items-center gap-1.5 px-3 py-2 rounded-lg border border-line hover:border-accent/40 transition text-sm text-muted">
-                                Changer
-                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
+                    {{-- Établissement actif --}}
+                    <details class="relative">
+                        <summary class="cursor-pointer list-none flex items-center gap-2 pl-2.5 pr-3 py-1.5 rounded-lg border border-line hover:border-accent/40 transition">
+                            <span class="w-6 h-6 shrink-0 rounded-md bg-stone flex items-center justify-center">
+                                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" class="text-ink/60">
+                                    <path d="M4 20V5a2 2 0 012-2h12a2 2 0 012 2v15" stroke="currentColor" stroke-width="1.8"/>
+                                    <path d="M9 20V15h6v5" stroke="currentColor" stroke-width="1.8"/>
+                                </svg>
+                            </span>
+                            <span class="text-sm font-medium text-ink max-w-[140px] truncate">
+                                {{ auth()->user()->currentEstablishment?->name ?? 'Aucun établissement' }}
+                            </span>
+                            @if(auth()->user()->establishments->count() > 1)
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" class="text-muted shrink-0">
                                     <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
-                            </summary>
+                            @endif
+                        </summary>
 
-                            <div class="absolute left-0 mt-2 w-64 bg-white rounded-xl border border-line shadow-xl z-50 overflow-hidden">
+                        @if(auth()->user()->establishments->count() > 1)
+                            <div class="absolute right-0 mt-2 w-64 bg-white rounded-xl border border-line shadow-xl z-50 overflow-hidden">
+                                <p class="px-4 pt-3 pb-2 text-xs font-semibold text-muted uppercase tracking-wide">Changer d'établissement</p>
                                 @foreach(auth()->user()->establishments as $item)
                                     <form method="POST" action="{{ route('establishments.switch', $item) }}">
                                         @csrf
-                                        <button class="w-full text-left px-4 py-3 hover:bg-stone transition flex items-center justify-between text-sm text-ink">
-                                            <span>{{ $item->name }}</span>
+                                        <button class="w-full text-left px-4 py-2.5 hover:bg-stone transition flex items-center justify-between text-sm text-ink">
+                                            <span class="truncate">{{ $item->name }}</span>
                                             @if(auth()->user()->currentEstablishment?->id == $item->id)
-                                                <svg width="14" height="14" class="text-emerald-600" fill="none" viewBox="0 0 24 24">
+                                                <svg width="14" height="14" class="text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24">
                                                     <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             @endif
@@ -294,30 +304,14 @@
                                     </form>
                                 @endforeach
                             </div>
-                        </details>
-                    @endif
-
-                </div>
-
-                {{-- Partie droite --}}
-                <div class="flex items-center gap-4">
+                        @endif
+                    </details>
 
                     {{-- Profil --}}
                     <details class="relative">
                         <summary class="list-none cursor-pointer">
-                            <div class="flex items-center gap-3 rounded-lg border border-line px-3 py-1.5 hover:border-muted/50 transition">
-                                <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-sm font-semibold">
-                                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
-                                </div>
-
-                                <div class="text-left hidden md:block">
-                                    <p class="text-sm font-medium text-ink leading-tight">{{ auth()->user()->name }}</p>
-                                    <p class="text-xs text-muted leading-tight">{{ auth()->user()->email }}</p>
-                                </div>
-
-                                <svg width="16" height="16" fill="none" class="text-muted" viewBox="0 0 24 24">
-                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
+                            <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-sm font-semibold hover:opacity-90 transition">
+                                {{ strtoupper(substr(auth()->user()->name,0,1)) }}
                             </div>
                         </summary>
 
@@ -336,15 +330,6 @@
                                     <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
                                 </svg>
                                 Modifier le profil
-                            </a>
-
-                            <a href=""
-                               class="flex items-center gap-3 px-4 py-3 text-sm text-ink hover:bg-stone transition">
-                                <svg width="16" height="16" class="shrink-0 text-muted" fill="none" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
-                                    <path d="M19.4 15A1.65 1.65 0 0 0 19.73 16.82L19.79 16.88A2 2 0 1 1 16.96 19.71L16.9 19.65A1.65 1.65 0 0 0 15.08 19.32A1.65 1.65 0 0 0 14.08 20.83V21A2 2 0 1 1 10.08 21V20.91A1.65 1.65 0 0 0 9.08 19.4A1.65 1.65 0 0 0 7.26 19.73L7.2 19.79A2 2 0 1 1 4.37 16.96L4.43 16.9A1.65 1.65 0 0 0 4.76 15.08A1.65 1.65 0 0 0 3.25 14.08H3A2 2 0 1 1 3 10.08H3.09A1.65 1.65 0 0 0 4.6 9.08A1.65 1.65 0 0 0 4.27 7.26L4.21 7.2A2 2 0 1 1 7.04 4.37L7.1 4.43A1.65 1.65 0 0 0 8.92 4.76A1.65 1.65 0 0 0 9.92 3.25V3A2 2 0 1 1 13.92 3V3.09A1.65 1.65 0 0 0 14.92 4.6A1.65 1.65 0 0 0 16.74 4.27L16.8 4.21A2 2 0 1 1 19.63 7.04L19.57 7.1A1.65 1.65 0 0 0 19.24 8.92A1.65 1.65 0 0 0 20.75 9.92H21A2 2 0 1 1 21 13.92H20.91A1.65 1.65 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="1.4"/>
-                                </svg>
-                                Paramètres
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">

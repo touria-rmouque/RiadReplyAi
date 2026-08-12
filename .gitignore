@@ -37,4 +37,5 @@ composer.phar
 /storage/framework/views/*
 .claude
 
-/public/storage
+/public/storage/
+/public/hot

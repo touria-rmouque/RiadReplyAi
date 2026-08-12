@@ -5,17 +5,23 @@
 @if ($needsSetup)
     <div class="max-w-lg mx-auto mt-16 text-center">
         <div class="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-5">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-accent"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-accent">
+                <path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
         </div>
+
         <h2 class="font-display font-semibold text-xl mb-2 text-ink">
-    Aucun établissement
-</h2>
+            Aucun établissement
+        </h2>
 
-<p class="text-muted text-sm mb-6">
-    Vous devez créer un établissement avant de pouvoir analyser des avis.
-</p>
+        <p class="text-muted text-sm mb-6">
+            Vous devez créer un établissement avant de pouvoir analyser des avis.
+        </p>
 
-<a href="{{ route('establishments.create') }}">
+        <a href="{{ route('establishments.create') }}" class="btn-primary inline-flex items-center gap-2 text-white px-6 py-2.5 rounded-lg font-medium text-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Créer mon établissement
+        </a>
     </div>
 @else
     {{-- En-tête --}}
@@ -136,8 +142,9 @@
                         <div class="bg-rose-500 rounded-r-full" style="width:{{ round(($stats['negative']/$stats['total'])*100) }}%"></div>
                     @endif
                 </div>
-                <div class="flex items-center gap-4 mt-3 text-xs text-muted">
+                <div class="flex items-center gap-4 mt-3 text-xs text-muted flex-wrap">
                     <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>{{ round(($stats['positive']/$stats['total'])*100) }}% positifs</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-300"></span>{{ round(($stats['neutral']/$stats['total'])*100) }}% neutres</span>
                     <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500"></span>{{ round(($stats['negative']/$stats['total'])*100) }}% négatifs</span>
                 </div>
             </div>

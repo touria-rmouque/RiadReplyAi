@@ -260,35 +260,35 @@
         <header class="bg-white border-b border-line px-8 py-4">
             <div class="flex items-center justify-between gap-4">
 
-                {{-- Partie gauche : titre de la page --}}
-                <h1 class="text-xl font-display font-semibold text-ink truncate">
-                    @yield('titre', 'Dashboard')
-                </h1>
+                {{-- Partie gauche : établissement actif --}}
+                <div class="flex items-center gap-3 min-w-0">
 
-                {{-- Partie droite --}}
-                <div class="flex items-center gap-3 shrink-0">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-11 h-11 shrink-0 rounded-xl bg-stone border border-line flex items-center justify-center">
+                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" class="text-ink/60">
+                                <path d="M4 20V5a2 2 0 012-2h12a2 2 0 012 2v15" stroke="currentColor" stroke-width="1.7"/>
+                                <path d="M9 20V15h6v5" stroke="currentColor" stroke-width="1.7"/>
+                                <path d="M8 8h.01M12 8h.01M16 8h.01M8 12h.01M12 12h.01M16 12h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </div>
 
-                    {{-- Établissement actif --}}
-                    <details class="relative">
-                        <summary class="cursor-pointer list-none flex items-center gap-2 pl-2.5 pr-3 py-1.5 rounded-lg border border-line hover:border-accent/40 transition">
-                            <span class="w-6 h-6 shrink-0 rounded-md bg-stone flex items-center justify-center">
-                                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" class="text-ink/60">
-                                    <path d="M4 20V5a2 2 0 012-2h12a2 2 0 012 2v15" stroke="currentColor" stroke-width="1.8"/>
-                                    <path d="M9 20V15h6v5" stroke="currentColor" stroke-width="1.8"/>
-                                </svg>
-                            </span>
-                            <span class="text-sm font-medium text-ink max-w-[140px] truncate">
+                        <div class="min-w-0">
+                            <p class="text-xs text-muted">Établissement actif</p>
+                            <h1 class="text-lg font-display font-semibold text-ink leading-tight truncate">
                                 {{ auth()->user()->currentEstablishment?->name ?? 'Aucun établissement' }}
-                            </span>
-                            @if(auth()->user()->establishments->count() > 1)
-                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" class="text-muted shrink-0">
-                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            @endif
-                        </summary>
+                            </h1>
+                        </div>
+                    </div>
 
-                        @if(auth()->user()->establishments->count() > 1)
-                            <div class="absolute right-0 mt-2 w-64 bg-white rounded-xl border border-line shadow-xl z-50 overflow-hidden">
+                    @if(auth()->user()->establishments->count() > 1)
+                        <details class="relative shrink-0">
+                            <summary class="cursor-pointer list-none w-8 h-8 rounded-lg border border-line hover:border-accent/40 hover:bg-stone transition flex items-center justify-center text-muted" title="Changer d'établissement">
+                                <svg width="15" height="15" fill="none" viewBox="0 0 24 24">
+                                    <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </summary>
+
+                            <div class="absolute left-0 mt-2 w-64 bg-white rounded-xl border border-line shadow-xl z-50 overflow-hidden">
                                 <p class="px-4 pt-3 pb-2 text-xs font-semibold text-muted uppercase tracking-wide">Changer d'établissement</p>
                                 @foreach(auth()->user()->establishments as $item)
                                     <form method="POST" action="{{ route('establishments.switch', $item) }}">
@@ -304,14 +304,26 @@
                                     </form>
                                 @endforeach
                             </div>
-                        @endif
-                    </details>
+                        </details>
+                    @endif
+                </div>
+
+                {{-- Partie droite --}}
+                <div class="flex items-center gap-3 shrink-0">
 
                     {{-- Profil --}}
                     <details class="relative">
                         <summary class="list-none cursor-pointer">
-                            <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-sm font-semibold hover:opacity-90 transition">
-                                {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+                            <div class="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-full border border-line hover:border-accent/40 transition">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-accent flex items-center justify-center text-white text-sm font-semibold">
+                                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+                                </div>
+                                <span class="hidden sm:block text-sm font-medium text-ink max-w-[120px] truncate">
+                                    {{ auth()->user()->name }}
+                                </span>
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" class="text-muted shrink-0">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
                             </div>
                         </summary>
 
